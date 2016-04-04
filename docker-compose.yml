@@ -1,0 +1,89 @@
+version: "2"
+services:
+
+  elasticsearch:
+    build: elasticsearch
+    volumes:
+      - "esdata:/users"
+      - "eslogs:/source"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
+
+#  kibana:
+#    container_name: gpl-dev
+#    build: dev
+#    depends_on:
+#      - jessie-gpl
+#      - datacontainer
+#      - cache
+#    volumes_from:
+#      - datacontainer
+#    ports:
+#      - "22"
+#    ulimits:
+#      nofile:
+#        soft: 20000
+#        hard: 40000
+#      nproc: 65535
+#    stdin_open: true
+
+#  logstash:
+#    build: logstash
+#    depends_on:
+#      - jessie-gpl
+#    ports:
+#      - "11211:11211"
+#    stdin_open: true
+
+  embulk:
+    build: embulk
+    depends_on:
+      - elasticsearch
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
+    stdin_open: true
+
+#  backend:
+#    build: backend
+#    depends_on:
+#      - elasticsearch
+#    ports:
+#      - 3306:3306
+#    ulimits:
+#      nproc: 65535
+#      nofile:
+#        soft: 20000
+#        hard: 40000
+#      restart: always
+
+#  revproxy:
+#    container_name: gpl-revproxy
+#    build: reverseproxy
+#    depends_on:
+#      - elasticsearch
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#      - "8080:8080"
+#    ulimits:
+#      nproc: 65535
+#      nofile:
+#        soft: 20000
+#        hard: 40000
+#    stdin_open: true
+#    restart: always
+
+volumes:
+  esdata:
+    driver: local
+  eslogs:
+    driver: local

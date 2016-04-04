@@ -1,0 +1,12 @@
+test.yml
+~ # cat test.yml
+in:
+  type: presto
+  host: api.treasuredata.com
+  port: 443
+  catalog: store
+  scheme: sunny
+  query: |
+    SELECT * from sunny LIMIT 10
+out:
+  type: stdout
